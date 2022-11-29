@@ -44,11 +44,11 @@ class ExeterScene(Scene):
 
         self.sand = DrawModelFromMesh(scene=self, M=poseMatrix(position=terrain, scale=0.25), mesh=SandModel(), shader=PhongShader(), name='plane')
 
-        self.sea = DrawModelFromMesh(scene=self, M=poseMatrix(position=terrain, scale=0.25), mesh=WaterModel(), shader=PhongShader(), name='plane')
+        self.sea = DrawModelFromMesh(scene=self, M=poseMatrix(position=terrain, scale=0.25), mesh=WaterModel(), shader=WaterShader(), name='plane')
 
 
         tree1 = load_obj_file('models/Group-of-Trees.obj')
-        self.tree1 = [DrawModelFromMesh(scene=self, M=poseMatrix(position=[6, -1, -8], scale=0.2,), mesh=mesh, shader=PhongShader(), name='box') for mesh in tree1]
+        self.tree1 = [DrawModelFromMesh(scene=self, M=poseMatrix(position=[-3, -1, -3], scale=0.2,), mesh=mesh, shader=PhongShader(), name='box') for mesh in tree1]
 
 
 

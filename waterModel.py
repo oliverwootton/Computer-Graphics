@@ -45,6 +45,13 @@ class WaterModel(Mesh):
                 distance1 = math.sqrt((0.5*(nvert - i ))**2 + (0.5*(nhoriz - j))**2)
                 distance2 = math.sqrt((0.5*(nvert/2 - i ))**2 + (0.5*(nhoriz/2 - j))**2)
                 distance4 = math.sqrt((0.5*(nvert/4 - i ))**2 + (0.5*(nhoriz/4 - j))**2)
+                
+                if 3 > distance2:
+                    v = i*nhoriz+j
+                    vertices[v, 1] -= 0.5
+                if  nvert/3 < distance4:
+                        v = i*nhoriz+j
+                        vertices[v, 1] -= 1
 
                 
         # np.savetxt("./verticies.txt", vertices, "%f")
