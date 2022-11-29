@@ -27,7 +27,7 @@ class FlattenCubeMap(DrawModelFromMesh):
         :param scene: The scene object.
         :param cube: [optional] if not None, the cubemap texture to draw (can be set at a later stage using the set() method)
         '''
-
+        
         vertices = np.array([
 
             [-2.0, -1.0, 0.0],  # 0 --> left
