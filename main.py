@@ -30,7 +30,7 @@ class ExeterScene(Scene):
     def __init__(self):
         Scene.__init__(self)
 
-        self.light = LightSource(self, position=[10, 4, -10])
+        self.light = LightSource(self, position=[15, 5, -10])
 
         self.shaders='phong'
 
@@ -45,28 +45,29 @@ class ExeterScene(Scene):
         self.sand = DrawModelFromMesh(scene=self, M=poseMatrix(position=terrain, scale=0.25), mesh=SandModel(), shader=PhongShader(), name='plane')
 
         self.sea = DrawModelFromMesh(scene=self, M=poseMatrix(position=terrain, scale=0.25), mesh=WaterModel(), shader=WaterShader(), name='plane')
-
-
+        
+        self.show_light = DrawModelFromMesh(scene=self, M=poseMatrix(position=self.light.position, scale=0.2), mesh=Sphere(material=Material(Ka=[10,10,10])), shader=FlatShader())
+        
         groupOfTrees1 = load_obj_file('models/Group-of-Trees.obj')
-        self.groupOfTrees1 = [DrawModelFromMesh(scene=self, M=poseMatrix(position=[-2.5, -1, -2.5], scale=0.25,), mesh=mesh, shader=PhongShader(), name='box') for mesh in groupOfTrees1]
+        self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[-2.5, -1, -2.5], scale=0.25,), mesh=mesh, shader=PhongShader(), name='box') for mesh in groupOfTrees1])
         groupOfTrees2 = load_obj_file('models/Group-of-Trees.obj')
-        self.groupOfTrees2 = [DrawModelFromMesh(scene=self, M=poseMatrix(position=[-2.5, -1, 2], scale=0.25,), mesh=mesh, shader=PhongShader(), name='box') for mesh in groupOfTrees2]
+        self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[-1.5, -1, 2.25], scale=0.2,), mesh=mesh, shader=PhongShader(), name='box') for mesh in groupOfTrees2])
         groupOfTrees3 = load_obj_file('models/Group-of-Trees.obj')
-        self.groupOfTrees3 = [DrawModelFromMesh(scene=self, M=poseMatrix(position=[2, -1, -2.5], scale=0.25,), mesh=mesh, shader=PhongShader(), name='box') for mesh in groupOfTrees3]
+        self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[2, -1, -2.25], scale=0.2,), mesh=mesh, shader=PhongShader(), name='box') for mesh in groupOfTrees3])
         
         tree1 = load_obj_file('models/line-of-trees.obj')
-        self.tree1 = [DrawModelFromMesh(scene=self, M=poseMatrix(position=[-4.5, -1, 0], scale=0.2,), mesh=mesh, shader=PhongShader(), name='box') for mesh in tree1]
+        self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[-4.5, -1, 0], scale=0.2,), mesh=mesh, shader=PhongShader(), name='box') for mesh in tree1])
         tree2 = load_obj_file('models/line-of-trees2.obj')
-        self.tree2 = [DrawModelFromMesh(scene=self, M=poseMatrix(position=[0, -1, -4.5], scale=0.2,), mesh=mesh, shader=PhongShader(), name='box') for mesh in tree2]
+        self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[0, -1, -4.5], scale=0.2,), mesh=mesh, shader=PhongShader(), name='box') for mesh in tree2])
         
         fern1 = load_obj_file('models/fern2.obj')
-        self.fern1 = [DrawModelFromMesh(scene=self, M=poseMatrix(position=[1.25, -1, 0.5], scale=0.1,), mesh=mesh, shader=PhongShader(), name='box') for mesh in fern1]
+        self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[1.25, -1, 0.5], scale=0.1,), mesh=mesh, shader=PhongShader(), name='box') for mesh in fern1])
         fern2 = load_obj_file('models/fern3.obj')
-        self.fern2 = [DrawModelFromMesh(scene=self, M=poseMatrix(position=[1.3, -1, 0], scale=0.1,), mesh=mesh, shader=PhongShader(), name='box') for mesh in fern2]
+        self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[1.3, -1, 0], scale=0.1,), mesh=mesh, shader=PhongShader(), name='box') for mesh in fern2])
         fern3 = load_obj_file('models/fern1.obj')
-        self.fern3 = [DrawModelFromMesh(scene=self, M=poseMatrix(position=[-1.2, -1, 0.5], scale=0.1,), mesh=mesh, shader=PhongShader(), name='box') for mesh in fern3]
+        self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[-1.2, -1, 0.5], scale=0.1,), mesh=mesh, shader=PhongShader(), name='box') for mesh in fern3])
         fern4 = load_obj_file('models/fern4.obj')
-        self.fern4 = [DrawModelFromMesh(scene=self, M=poseMatrix(position=[-1.4, -1, -1], scale=0.1,), mesh=mesh, shader=PhongShader(), name='box') for mesh in fern4]
+        self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[-1.4, -1, -1], scale=0.1,), mesh=mesh, shader=PhongShader(), name='box') for mesh in fern4])
 
 
 
@@ -84,12 +85,12 @@ class ExeterScene(Scene):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         # also all models from the table
-        # for model in self.table:
-        #     model.draw()
-
-        # # and for the box
-        for model in self.box:
+        for model in self.models:
             model.draw()
+            
+        # # and for the box
+        # for model in self.box:
+        #     model.draw()
 
     def draw_reflections(self):
         self.skybox.draw()
@@ -102,7 +103,7 @@ class ExeterScene(Scene):
         #     model.draw()
 
         # # and for the box
-        # for model in self.box:
+        # for model in self.sea:
         #     model.draw()
 
 
@@ -127,37 +128,18 @@ class ExeterScene(Scene):
 
         # when rendering the framebuffer we ignore the reflective object
         if not framebuffer:
-            #glEnable(GL_BLEND)
-            #glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-#            self.envbox.draw()
-            #self.environment.update(self)
-            #self.envbox.draw()
+            # glEnable(GL_BLEND)
+            # glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+            # self.envbox.draw()
+            # self.environment.update(self)
+            # self.envbox.draw()
 
             self.box.draw()
             self.sand.draw()
             self.sea.draw()
             
-            for model in self.groupOfTrees1:
+            for model in self.models:
                 model.draw()
-            for model in self.groupOfTrees2:
-                model.draw()
-            for model in self.groupOfTrees3:
-                model.draw()
-            
-            for model in self.tree1:
-                model.draw()
-            for model in self.tree2:
-                model.draw()
-            
-            for model in self.fern1:
-                model.draw()
-            for model in self.fern2:
-                model.draw()
-            for model in self.fern3:
-                model.draw()
-            for model in self.fern4:
-                model.draw()
-            
             
             
             
@@ -174,7 +156,7 @@ class ExeterScene(Scene):
         # for model in self.box:
         #     model.draw()
 
-        # self.show_light.draw()
+        self.show_light.draw()
 
         # once we are done drawing, we display the scene
         # Note that here we use double buffering to avoid artefacts:
