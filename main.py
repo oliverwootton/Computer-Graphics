@@ -83,8 +83,13 @@ class JungleScene(Scene):
 
         self.skybox = SkyBox(scene=self)
         
+        self.environment = EnvironmentMappingTexture(width=400, height=400)
+        self.sphere = DrawModelFromMesh(scene=self, M=poseMatrix(position=[0, 1, 0], scale=0.5), mesh=Sphere(), shader=EnvironmentShader(map=self.environment))
+        
         # environment box for reflectionsenvbox
         #self.envbox = EnvironmentBox(scene=self)
+        
+        self.flattened_cube = FlattenCubeMap(scene=self, cube=self.environment)
 
 
     def draw_shadow_map(self):
@@ -100,17 +105,13 @@ class JungleScene(Scene):
         #     model.draw()
 
     def draw_reflections(self):
+        
         self.skybox.draw()
+        self.sea.draw()
+        self.sand.draw()
+        self.terrain.draw()
 
         for model in self.models:
-            model.draw()
-
-        # # also all models from the table
-        # for model in self.table:
-        #     model.draw()
-
-        # # and for the box
-        for model in self.sea:
             model.draw()
 
 
@@ -138,11 +139,16 @@ class JungleScene(Scene):
             # glEnable(GL_BLEND)
             # glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
             # self.envbox.draw()
-            # self.environment.update(self)
-            # self.envbox.draw()
-
-            self.terrain.draw()
+            
+            self.environment.update(self)
+            
+            # self.sphere.draw()
+            
+            # self.show_texture.draw()
+            
+            # self.show_shadow_map.draw()
         
+        self.terrain.draw()
         self.sand.draw()
         self.sea.draw()
         

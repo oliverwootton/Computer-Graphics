@@ -23,10 +23,10 @@ class EnvironmentShader(BaseShaderProgram):
     def bind(self, model, M):
         if self.map is not None:
             #self.map.update(model.scene)
-            unit = len(model.mesh.textures)
-            glActiveTexture(GL_TEXTURE0)
+            # unit = len(model.mesh.textures)
+            # glActiveTexture(GL_TEXTURE0)
             self.map.bind()
-            self.uniforms['sampler_cube'].bind(0)
+            # self.uniforms['sampler_cube'].bind(0)
 
         glUseProgram(self.program)
 
