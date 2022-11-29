@@ -24,7 +24,7 @@ void main() {
     // note that gl_Position is a standard output of the
     // vertex shader.
     gl_Position = PVM * vec4(position, 1.0f);
-    glColor4f(1.0, 1.0, 1.0, 0.5);
+    
 
     // 2. calculate vectors used for shading calculations
     // those will be interpolate before being sent to the

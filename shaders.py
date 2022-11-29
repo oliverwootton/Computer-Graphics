@@ -239,33 +239,33 @@ class PhongShader(BaseShaderProgram):
 
         }
         
-    class WaterShader(BaseShaderProgram):
+class WaterShader(BaseShaderProgram):
         
-        def __init__(self, name='water'):
+    def __init__(self, name='water'):
 
-            BaseShaderProgram.__init__(self, name=name)
+        BaseShaderProgram.__init__(self, name=name)
 
-            # in order to simplify extension of the class in the future, we start storing uniforms in a dictionary.
-            self.uniforms = {
-                'PVM': Uniform('PVM'),   # project view model matrix
-                'VM': Uniform('VM'),     # view model matrix (necessary for light computations)
-                'VMiT': Uniform('VMiT'),  # inverse-transpose of the view model matrix (for normal transformation)
-                'mode': Uniform('mode',0),  # rendering mode (only for illustration, in general you will want one shader program per mode)
-                'alpha': Uniform('alpha', 1.0),
-                # rendering mode (only for illustration, in general you will want one shader program per mode)
-                'Ka': Uniform('Ka'),
-                'Kd': Uniform('Kd'),
-                'Ks': Uniform('Ks'),
-                'Ns': Uniform('Ns'),
-                'light': Uniform('light', np.array([0., 0., 0.], 'f')),
-                'Ia': Uniform('Ia'),
-                'Id': Uniform('Id'),
-                'Is': Uniform('Is'),
-                'has_texture': Uniform('has_texture'),
-                'textureObject': Uniform('textureObject')
-                #'textureObject2': Uniform('textureObject2'),
+        # in order to simplify extension of the class in the future, we start storing uniforms in a dictionary.
+        self.uniforms = {
+            'PVM': Uniform('PVM'),   # project view model matrix
+            'VM': Uniform('VM'),     # view model matrix (necessary for light computations)
+            'VMiT': Uniform('VMiT'),  # inverse-transpose of the view model matrix (for normal transformation)
+            'mode': Uniform('mode',0),  # rendering mode (only for illustration, in general you will want one shader program per mode)
+            'alpha': Uniform('alpha', 1.0),
+            # rendering mode (only for illustration, in general you will want one shader program per mode)
+            'Ka': Uniform('Ka'),
+            'Kd': Uniform('Kd'),
+            'Ks': Uniform('Ks'),
+            'Ns': Uniform('Ns'),
+            'light': Uniform('light', np.array([0., 0., 0.], 'f')),
+            'Ia': Uniform('Ia'),
+            'Id': Uniform('Id'),
+            'Is': Uniform('Is'),
+            'has_texture': Uniform('has_texture'),
+            'textureObject': Uniform('textureObject')
+            #'textureObject2': Uniform('textureObject2'),
 
-            }
+        }
 
     def bind(self, model, M):
         '''
