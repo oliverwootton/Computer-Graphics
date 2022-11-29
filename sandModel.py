@@ -30,26 +30,28 @@ class SandModel(Mesh):
                 v = i*nhoriz+j
                 vertices[v, 0] = i
                 
-            
+                # Makes a flat plane       
                 vertices[v, 1] = 0  
                     
                 vertices[v, 2] = j
                 vertex_colors[v, 0] = float(i) / float(nvert)
                 vertex_colors[v, 1] = float(j) / float(nhoriz)
-                textureCoords[v, 1] = float(i) / float(nvert) *5
-                textureCoords[v, 0] = float(j) / float(nhoriz) *5
+                # Multiplier makes the texture wrap increase, sand is increased to make the sand look like fine grains
+                textureCoords[v, 1] = float(i) / float(nvert) *8
+                textureCoords[v, 0] = float(j) / float(nhoriz) *8
         
     
+    
+        # loop creates the different terrain heights around the model
         for i in range(nvert):
             for j in range(nhoriz):
-                distance1 = math.sqrt((0.5*(nvert - i ))**2 + (0.5*(nhoriz - j))**2)
                 distance2 = math.sqrt((0.5*(nvert/2 - i ))**2 + (0.5*(nhoriz/2 - j))**2)
                 distance4 = math.sqrt((0.5*(nvert/4 - i ))**2 + (0.5*(nhoriz/4 - j))**2)
                 
+                # used to create the dip in the centre of the plane
                 if 2 > distance2:
                     v = i*nhoriz+j
                     vertices[v, 1] -= 0.2
-                
                 if 1.5 > distance2:
                     v = i*nhoriz+j
                     vertices[v, 1] -= 0.75

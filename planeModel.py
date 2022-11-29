@@ -30,8 +30,7 @@ class PlaneModel(Mesh):
                 v = i*nhoriz+j
                 vertices[v, 0] = i
                 
-                # This ensures that the plane will be smooth
-                
+                # Line 34-38 make the terrain bumpy but ensure its still smooth
                 z = vertices[v-1, 1] - np.sin(x)
                 if (z > 0 and z <= 0.3) or z < 0 and (0 - z <= 0.3):
                     vertices[v, 1] = np.sin(x) 
@@ -41,17 +40,18 @@ class PlaneModel(Mesh):
                 vertices[v, 2] = j
                 vertex_colors[v, 0] = float(i) / float(nvert)
                 vertex_colors[v, 1] = float(j) / float(nhoriz)
+                # Multiplier makes the texture wrap increase
                 textureCoords[v, 1] = float(i) / float(nvert) *10
                 textureCoords[v, 0] = float(j) / float(nhoriz) *10
      
-    
+
+        # loop creates the different terrain heights around the model
         for i in range(nvert):
             for j in range(nhoriz):
-                distance1 = math.sqrt((0.5*(nvert - i ))**2 + (0.5*(nhoriz - j))**2)
                 distance2 = math.sqrt((0.5*(nvert/2 - i ))**2 + (0.5*(nhoriz/2 - j))**2)
                 distance4 = math.sqrt((0.5*(nvert/4 - i ))**2 + (0.5*(nhoriz/4 - j))**2)
                 
-                # decreasing area in the middle
+                # used to create the dip in the centre of the plane
                 if 2 > distance2:
                     v = i*nhoriz+j
                     vertices[v, 1] -= 3  

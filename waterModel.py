@@ -29,23 +29,25 @@ class WaterModel(Mesh):
                 x = random.random()
                 v = i*nhoriz+j
                 vertices[v, 0] = i
-                
-            
+
+                # Makes a flat plane
                 vertices[v, 1] = 0  
                     
                 vertices[v, 2] = j
                 vertex_colors[v, 0] = float(i) / float(nvert)
                 vertex_colors[v, 1] = float(j) / float(nhoriz)
-                textureCoords[v, 1] = float(i) / float(nvert) *5
-                textureCoords[v, 0] = float(j) / float(nhoriz) *5
+                # Multiplier makes the texture wrap increase
+                textureCoords[v, 1] = float(i) / float(nvert) *3
+                textureCoords[v, 0] = float(j) / float(nhoriz) *3
         
-    
+
+        # loop creates the different terrain heights around the model
         for i in range(nvert):
             for j in range(nhoriz):
-                distance1 = math.sqrt((0.5*(nvert - i ))**2 + (0.5*(nhoriz - j))**2)
                 distance2 = math.sqrt((0.5*(nvert/2 - i ))**2 + (0.5*(nhoriz/2 - j))**2)
                 distance4 = math.sqrt((0.5*(nvert/4 - i ))**2 + (0.5*(nhoriz/4 - j))**2)
                 
+                # used to create the dip in the centre of the plane
                 if 3 > distance2:
                     v = i*nhoriz+j
                     vertices[v, 1] -= 0.5
@@ -96,6 +98,7 @@ class WaterModel(Mesh):
                       material=material
                       )
         
+        # Makes the water transparent by decreasing the opacity of the texture
         self.material.alpha = 0.2
         
         self.textures.append(Texture('sea-water.jpg'))
