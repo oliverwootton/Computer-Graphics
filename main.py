@@ -30,23 +30,26 @@ class ExeterScene(Scene):
     def __init__(self):
         Scene.__init__(self)
 
+        # Light source position
         self.light = LightSource(self, position=[10, 10, -5])
 
         self.shaders='phong'
 
-        # for shadow map rendering (creates a texture to apply to the terrain surface)
+        # For shadow map rendering (creates a texture to apply to the terrain surface)
         self.shadows = ShadowMap(light=self.light)
         self.show_shadow_map = ShowTexture(self, self.shadows)
 
+        # Variable ensures all the 
         terrain = [-5, -1, -5]
-
-        # creates the terrain model with shadows mapped on top
+        # Creates the terrain model with shadows mapped on top
         self.terrain = DrawModelFromMesh(scene=self, M=poseMatrix(position=terrain, scale=0.25), mesh=PlaneModel(), shader=ShadowMappingShader(shadow_map=self.shadows), name='plane')
         self.sand = DrawModelFromMesh(scene=self, M=poseMatrix(position=terrain, scale=0.25), mesh=SandModel(), shader=ShadowMappingShader(shadow_map=self.shadows), name='plane')
         self.sea = DrawModelFromMesh(scene=self, M=poseMatrix(position=terrain, scale=0.25), mesh=WaterModel(), shader=WaterShader(), name='plane')       
-        self.show_light = DrawModelFromMesh(scene=self, M=poseMatrix(position=self.light.position, scale=0.2), mesh=Sphere(material=Material(Ka=[10,10,10])), shader=FlatShader())
-   
         
+        # Uncomment below to show the position of the light source
+        # self.show_light = DrawModelFromMesh(scene=self, M=poseMatrix(position=self.light.position, scale=0.2), mesh=Sphere(material=Material(Ka=[10,10,10])), shader=FlatShader())
+   
+        # Creates the models for groups of trees and ferns
         groupOfTrees1 = load_obj_file('models/Group-of-Trees.obj')
         self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[-2.5, -1, -2.5], scale=0.25,), mesh=mesh, shader=PhongShader(), name='box') for mesh in groupOfTrees1])
         groupOfTrees2 = load_obj_file('models/Group-of-Trees.obj')
@@ -54,11 +57,13 @@ class ExeterScene(Scene):
         groupOfTrees3 = load_obj_file('models/Group-of-Trees.obj')
         self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[2, -1, -2.25], scale=0.2,), mesh=mesh, shader=PhongShader(), name='box') for mesh in groupOfTrees3])
         
+        # Creates the models for a line of trees on the edge of the plane
         tree1 = load_obj_file('models/line-of-trees.obj')
         self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[-4.5, -1, 0], scale=0.2,), mesh=mesh, shader=PhongShader(), name='box') for mesh in tree1])
         tree2 = load_obj_file('models/line-of-trees2.obj')
         self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[0, -1, -4.5], scale=0.2,), mesh=mesh, shader=PhongShader(), name='box') for mesh in tree2])
         
+        # Creates the models for individual fern models 
         fern1 = load_obj_file('models/fern2.obj')
         self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[1.25, -1, 0.5], scale=0.1,), mesh=mesh, shader=PhongShader(), name='box') for mesh in fern1])
         fern2 = load_obj_file('models/fern3.obj')
@@ -137,8 +142,6 @@ class ExeterScene(Scene):
             
             for model in self.models:
                 model.draw()
-            
-        
             
 
         # then we loop over all models in the list and draw them
