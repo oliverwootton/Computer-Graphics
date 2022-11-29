@@ -166,8 +166,6 @@ class Scene:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mods = pygame.key.get_mods()
                 if event.button == 4:
-                    #pass
-                    #TODO: WS2
                     if mods & pygame.KMOD_CTRL:
                         self.light.position *= 1.1
                         self.light.update()
@@ -175,8 +173,6 @@ class Scene:
                         self.camera.distance = max(1, self.camera.distance - 1)
 
                 elif event.button == 5:
-                    #pass
-                    #TODO: WS2
                     if mods & pygame.KMOD_CTRL:
                         self.light.position *= 0.9
                         self.light.update()
@@ -187,7 +183,7 @@ class Scene:
                 if pygame.mouse.get_pressed()[0]:
                     if self.mouse_mvt is not None:
                         self.mouse_mvt = pygame.mouse.get_rel()
-                        #TODO: WS2
+                        
                         self.camera.center[0] -= (float(self.mouse_mvt[0]) / self.window_size[0])
                         self.camera.center[1] -= (float(self.mouse_mvt[1]) / self.window_size[1])
                     else:
@@ -196,7 +192,7 @@ class Scene:
                 elif pygame.mouse.get_pressed()[2]:
                     if self.mouse_mvt is not None:
                         self.mouse_mvt = pygame.mouse.get_rel()
-                        #TODO: WS2
+                      
                         self.camera.phi -= (float(self.mouse_mvt[0]) / self.window_size[0])
                         self.camera.psi -= (float(self.mouse_mvt[1]) / self.window_size[1])
                     else:

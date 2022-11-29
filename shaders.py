@@ -313,10 +313,6 @@ class BlinnShader(PhongShader):
         PhongShader.__init__(self, name='blinn')
         
 
-class WaterShader(PhongShader):
-    def __init__(self):
-        PhongShader.__init__(self, name='water')
-
 
 class TextureShader(PhongShader):
     def __init__(self):

@@ -26,7 +26,7 @@ from waterModel import WaterModel
 from sceneFrame import SceneFrame
 from bottomFrame import BottomFrame
 
-class ExeterScene(Scene):
+class JungleScene(Scene):
     def __init__(self):
         Scene.__init__(self)
 
@@ -86,8 +86,6 @@ class ExeterScene(Scene):
         # environment box for reflectionsenvbox
         #self.envbox = EnvironmentBox(scene=self)
 
-        # this object allows to visualise the flattened cube
-
 
     def draw_shadow_map(self):
         # first we need to clear the scene, we also clear the depth buffer to handle occlusions
@@ -104,8 +102,8 @@ class ExeterScene(Scene):
     def draw_reflections(self):
         self.skybox.draw()
 
-        # for model in self.models:
-        #     model.draw()
+        for model in self.models:
+            model.draw()
 
         # # also all models from the table
         # for model in self.table:
@@ -144,29 +142,25 @@ class ExeterScene(Scene):
             # self.envbox.draw()
 
             self.terrain.draw()
-            self.sand.draw()
-            self.sea.draw()
-            
-            self.frame.draw()
-            self.frame2.draw()
-            self.frame3.draw()
-            self.frame4.draw()
-            self.frameBottom.draw()
-            
-            for model in self.models:
-                model.draw()
-            
-
+        
+        self.sand.draw()
+        self.sea.draw()
+        
+        self.frame.draw()
+        self.frame2.draw()
+        self.frame3.draw()
+        self.frame4.draw()
+        self.frameBottom.draw()
+        
+        
         # then we loop over all models in the list and draw them
-        # for model in self.models:
-        #     model.draw()
+        for model in self.models:
+            model.draw()
+        
+
 
         # # also all models from the table
         # for model in self.table:
-        #     model.draw()
-
-        # # and for the terrain
-        # for model in self.terrain:
         #     model.draw()
 
         # Uncomment to show ball of light
@@ -252,7 +246,7 @@ class ExeterScene(Scene):
 if __name__ == '__main__':
     # initialises the scene object
     # scene = Scene(shaders='gouraud')
-    scene = ExeterScene()
+    scene = JungleScene()
 
     # starts drawing the scene
     scene.run()
