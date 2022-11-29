@@ -77,7 +77,6 @@ class JungleScene(Scene):
         fern4 = load_obj_file('models/fern4.obj')
         self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[-1.4, -1, -1], scale=0.1,), mesh=mesh, shader=PhongShader(), name='box') for mesh in fern4])
 
-
         self.skybox = SkyBox(scene=self)
         
         self.environment = EnvironmentMappingTexture(width=400, height=400)
@@ -86,23 +85,16 @@ class JungleScene(Scene):
         # Uncomment below to show the position of the light source
         # self.show_light = DrawModelFromMesh(scene=self, M=poseMatrix(position=self.light.position, scale=0.2), mesh=Sphere(material=Material(Ka=[10,10,10])), shader=FlatShader())
         
-        # environment box for reflectionsenvbox
-        #self.envbox = EnvironmentBox(scene=self)
-        
         # self.flattened_cube = FlattenCubeMap(scene=self, cube=self.environment)
-
 
     def draw_shadow_map(self):
         # first we need to clear the scene, we also clear the depth buffer to handle occlusions
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-
         # also all models from the table
         for model in self.models:
             model.draw()
-            
 
     def draw_reflections(self):
-        
         self.skybox.draw()
         self.sea.draw()
         self.sand.draw()
@@ -110,7 +102,6 @@ class JungleScene(Scene):
 
         for model in self.models:
             model.draw()
-
 
     def draw(self, framebuffer=False):
         '''
@@ -132,10 +123,9 @@ class JungleScene(Scene):
         self.shadows.render(self, target=[-5, -1, 0])
 
         # when rendering the framebuffer we ignore the reflective object
-        # if not framebuffer:
-        #     self.environment.update(self)
-        #     self.sphere.draw()
-        
+        if not framebuffer:
+            self.environment.update(self)
+            self.sphere.draw()
         
         self.terrain.draw()
         self.sand.draw()
@@ -147,16 +137,10 @@ class JungleScene(Scene):
         self.frame4.draw()
         self.frameBottom.draw()
         
-        
         # then we loop over all models in the list and draw them
         for model in self.models:
             model.draw()
         
-
-
-        # # also all models from the table
-        # for model in self.table:
-        #     model.draw()
 
         # Uncomment to show ball of light
         # self.show_light.draw()
@@ -236,7 +220,6 @@ class JungleScene(Scene):
             else:
                 print('--> enable GL_DEPTH_TEST')
                 glEnable(GL_DEPTH_TEST)
-
 
 if __name__ == '__main__':
     # initialises the scene object
