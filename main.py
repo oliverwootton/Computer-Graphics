@@ -80,7 +80,7 @@ class JungleScene(Scene):
         self.skybox = SkyBox(scene=self)
         
         self.environment = EnvironmentMappingTexture(width=400, height=400)
-        self.sphere = DrawModelFromMesh(scene=self, M=poseMatrix(position=[0, 1, 0], scale=0.5), mesh=Sphere(), shader=EnvironmentShader(map=self.environment))
+        self.sphere = DrawModelFromMesh(scene=self, M=poseMatrix(position=[0, 0, 0], scale=0.5), mesh=Sphere(), shader=EnvironmentShader(map=self.environment))
         
         # Uncomment below to show the position of the light source
         # self.show_light = DrawModelFromMesh(scene=self, M=poseMatrix(position=self.light.position, scale=0.2), mesh=Sphere(material=Material(Ka=[10,10,10])), shader=FlatShader())
@@ -123,9 +123,9 @@ class JungleScene(Scene):
         self.shadows.render(self, target=[-5, -1, 0])
 
         # when rendering the framebuffer we ignore the reflective object
-        if not framebuffer:
-            self.environment.update(self)
-            self.sphere.draw()
+        # if not framebuffer:
+        #     self.environment.update(self)
+        #     self.sphere.draw()
         
         self.terrain.draw()
         self.sand.draw()
