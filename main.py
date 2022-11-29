@@ -52,9 +52,6 @@ class JungleScene(Scene):
         self.frame3 = DrawModelFromMesh(scene=self, M=poseMatrix(position=[-5, -2.5, -5], scale=scaleFactor, orientation=1.571), mesh=SceneFrame(), shader=PhongShader(), name='plane')
         self.frame2 = DrawModelFromMesh(scene=self, M=poseMatrix(position=[4.75, -2.5, 4.75], scale=scaleFactor, orientation=3.14), mesh=SceneFrame(), shader=PhongShader(), name='plane')
         self.frame4 = DrawModelFromMesh(scene=self, M=poseMatrix(position=[4.75, -2.5, 4.76], scale=scaleFactor, orientation=-1.571), mesh=SceneFrame(), shader=PhongShader(), name='plane')             
-        
-        # Uncomment below to show the position of the light source
-        # self.show_light = DrawModelFromMesh(scene=self, M=poseMatrix(position=self.light.position, scale=0.2), mesh=Sphere(material=Material(Ka=[10,10,10])), shader=FlatShader())
    
         # Creates the models for groups of trees and ferns
         groupOfTrees1 = load_obj_file('models/Group-of-Trees.obj')
@@ -86,10 +83,13 @@ class JungleScene(Scene):
         self.environment = EnvironmentMappingTexture(width=400, height=400)
         self.sphere = DrawModelFromMesh(scene=self, M=poseMatrix(position=[0, 1, 0], scale=0.5), mesh=Sphere(), shader=EnvironmentShader(map=self.environment))
         
+        # Uncomment below to show the position of the light source
+        # self.show_light = DrawModelFromMesh(scene=self, M=poseMatrix(position=self.light.position, scale=0.2), mesh=Sphere(material=Material(Ka=[10,10,10])), shader=FlatShader())
+        
         # environment box for reflectionsenvbox
         #self.envbox = EnvironmentBox(scene=self)
         
-        self.flattened_cube = FlattenCubeMap(scene=self, cube=self.environment)
+        # self.flattened_cube = FlattenCubeMap(scene=self, cube=self.environment)
 
 
     def draw_shadow_map(self):
@@ -100,9 +100,6 @@ class JungleScene(Scene):
         for model in self.models:
             model.draw()
             
-        # # and for the box
-        # for model in self.terrain:
-        #     model.draw()
 
     def draw_reflections(self):
         
@@ -135,18 +132,10 @@ class JungleScene(Scene):
         self.shadows.render(self, target=[-5, -1, 0])
 
         # when rendering the framebuffer we ignore the reflective object
-        if not framebuffer:
-            # glEnable(GL_BLEND)
-            # glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-            # self.envbox.draw()
-            
-            self.environment.update(self)
-            
-            # self.sphere.draw()
-            
-            # self.show_texture.draw()
-            
-            # self.show_shadow_map.draw()
+        # if not framebuffer:
+        #     self.environment.update(self)
+        #     self.sphere.draw()
+        
         
         self.terrain.draw()
         self.sand.draw()
