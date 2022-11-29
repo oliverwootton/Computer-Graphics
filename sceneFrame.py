@@ -9,14 +9,11 @@ from texture import Texture
 import random
 import math
 
-class WaterModel(Mesh):
-    def __init__(self, nvert=40, nhoriz=40, material=Material(Ka=[0.5,0.5,0.5], Kd=[0.6,0.6,0.9], Ks=[1.,1.,0.9], Ns=15.0)):
+class SceneFrame(Mesh):
+    def __init__(self, nvert=8, nhoriz=40, material=Material(Ka=[0.5,0.5,0.5], Kd=[0.6,0.6,0.9], Ks=[1.,1.,0.9], Ns=15.0)):
         n = nvert*nhoriz
         vertices = np.zeros((n, 3), 'f')
         vertex_colors = np.zeros((n, 3), 'f')
-
-        vslice = np.pi/nvert
-        hslice = 2.*np.pi/nhoriz
 
         # texture coordinates
         textureCoords = np.zeros((n, 2), 'f')
@@ -28,10 +25,10 @@ class WaterModel(Mesh):
             for j in range(nhoriz):
                 x = random.random()
                 v = i*nhoriz+j
-                vertices[v, 0] = i
+                vertices[v, 0] = 0
 
                 # Makes a flat plane
-                vertices[v, 1] = 0  
+                vertices[v, 1] = i 
                     
                 vertices[v, 2] = j
                 vertex_colors[v, 0] = float(i) / float(nvert)
@@ -39,24 +36,7 @@ class WaterModel(Mesh):
                 # Multiplier makes the texture wrap increase
                 textureCoords[v, 1] = float(i) / float(nvert) *3
                 textureCoords[v, 0] = float(j) / float(nhoriz) *3
-        
 
-        # loop creates the different terrain heights around the model
-        for i in range(nvert):
-            for j in range(nhoriz):
-                distance2 = math.sqrt((0.5*(nvert/2 - i ))**2 + (0.5*(nhoriz/2 - j))**2)
-                distance4 = math.sqrt((0.5*(nvert/4 - i ))**2 + (0.5*(nhoriz/4 - j))**2)
-                
-                # used to create the dip in the centre of the plane
-                if 3 > distance2:
-                    v = i*nhoriz+j
-                    vertices[v, 1] -= 0.5
-                if  nvert/3 < distance4:
-                        v = i*nhoriz+j
-                        vertices[v, 1] -= 1
-
-                
-        # np.savetxt("./verticies.txt", vertices, "%f")
         
         nfaces = 2 * (nvert-1)*(nhoriz-1)
         indices = np.zeros((nfaces, 3), dtype=np.uint32)
@@ -98,8 +78,6 @@ class WaterModel(Mesh):
                       material=material
                       )
         
-        # Makes the water transparent by decreasing the opacity of the texture
-        self.material.alpha = 0.2
-        
         # Applies the texture to the model
-        self.textures.append(Texture('sea-water.jpg'))
+        self.textures.append(Texture('floor_texture.jpg'))
+       

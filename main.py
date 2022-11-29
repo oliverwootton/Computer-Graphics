@@ -21,10 +21,10 @@ from skyBox import *
 from environmentMapping import *
 
 from planeModel import PlaneModel
-
 from sandModel import SandModel
-
 from waterModel import WaterModel
+from sceneFrame import SceneFrame
+from bottomFrame import BottomFrame
 
 class ExeterScene(Scene):
     def __init__(self):
@@ -44,7 +44,14 @@ class ExeterScene(Scene):
         # Creates the terrain model with shadows mapped on top
         self.terrain = DrawModelFromMesh(scene=self, M=poseMatrix(position=terrain, scale=0.25), mesh=PlaneModel(), shader=ShadowMappingShader(shadow_map=self.shadows), name='plane')
         self.sand = DrawModelFromMesh(scene=self, M=poseMatrix(position=terrain, scale=0.25), mesh=SandModel(), shader=ShadowMappingShader(shadow_map=self.shadows), name='plane')
-        self.sea = DrawModelFromMesh(scene=self, M=poseMatrix(position=terrain, scale=0.25), mesh=WaterModel(), shader=WaterShader(), name='plane')       
+        self.sea = DrawModelFromMesh(scene=self, M=poseMatrix(position=terrain, scale=0.25), mesh=WaterModel(), shader=PhongShader(), name='plane') 
+        
+        scaleFactor = 0.2507
+        self.frameBottom = DrawModelFromMesh(scene=self, M=poseMatrix(position=[-5, -2.5, -5], scale=0.25), mesh=BottomFrame(), shader=PhongShader(), name='plane') 
+        self.frame = DrawModelFromMesh(scene=self, M=poseMatrix(position=[-5, -2.5, -5.01], scale=scaleFactor), mesh=SceneFrame(), shader=PhongShader(), name='plane')
+        self.frame3 = DrawModelFromMesh(scene=self, M=poseMatrix(position=[-5, -2.5, -5], scale=scaleFactor, orientation=1.571), mesh=SceneFrame(), shader=PhongShader(), name='plane')
+        self.frame2 = DrawModelFromMesh(scene=self, M=poseMatrix(position=[4.75, -2.5, 4.75], scale=scaleFactor, orientation=3.14), mesh=SceneFrame(), shader=PhongShader(), name='plane')
+        self.frame4 = DrawModelFromMesh(scene=self, M=poseMatrix(position=[4.75, -2.5, 4.76], scale=scaleFactor, orientation=-1.571), mesh=SceneFrame(), shader=PhongShader(), name='plane')             
         
         # Uncomment below to show the position of the light source
         # self.show_light = DrawModelFromMesh(scene=self, M=poseMatrix(position=self.light.position, scale=0.2), mesh=Sphere(material=Material(Ka=[10,10,10])), shader=FlatShader())
@@ -140,6 +147,12 @@ class ExeterScene(Scene):
             self.sand.draw()
             self.sea.draw()
             
+            self.frame.draw()
+            self.frame2.draw()
+            self.frame3.draw()
+            self.frame4.draw()
+            self.frameBottom.draw()
+            
             for model in self.models:
                 model.draw()
             
@@ -156,7 +169,8 @@ class ExeterScene(Scene):
         # for model in self.terrain:
         #     model.draw()
 
-        self.show_light.draw()
+        # Uncomment to show ball of light
+        # self.show_light.draw()
 
         # once we are done drawing, we display the scene
         # Note that here we use double buffering to avoid artefacts:

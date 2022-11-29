@@ -58,7 +58,7 @@ def poseMatrix(position=[0,0,0], orientation=0, scale=1):
     :return: the 4x4 TRS matrix
     '''
     # apply the position and orientation of the object
-    R = rotationMatrixZ(orientation)
+    R = rotationMatrixY(orientation)
     T = translationMatrix(position)
 
     # ... and the scale factor

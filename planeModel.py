@@ -108,4 +108,5 @@ class PlaneModel(Mesh):
                       material=material
                       )
         
+        # Applies the texture to the model
         self.textures.append(Texture('grass2.jpg'))
