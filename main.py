@@ -34,19 +34,18 @@ class ExeterScene(Scene):
 
         self.shaders='phong'
 
-        # for shadow map rendering
+        # for shadow map rendering (creates a texture to apply to the terrain surface)
         self.shadows = ShadowMap(light=self.light)
         self.show_shadow_map = ShowTexture(self, self.shadows)
 
         terrain = [-5, -1, -5]
 
-        self.box = DrawModelFromMesh(scene=self, M=poseMatrix(position=terrain, scale=0.25), mesh=PlaneModel(), shader=PhongShader(), name='plane')
-
-        self.sand = DrawModelFromMesh(scene=self, M=poseMatrix(position=terrain, scale=0.25), mesh=SandModel(), shader=PhongShader(), name='plane')
-
-        self.sea = DrawModelFromMesh(scene=self, M=poseMatrix(position=terrain, scale=0.25), mesh=WaterModel(), shader=WaterShader(), name='plane')
-        
+        # creates the terrain model with shadows mapped on top
+        self.terrain = DrawModelFromMesh(scene=self, M=poseMatrix(position=terrain, scale=0.25), mesh=PlaneModel(), shader=ShadowMappingShader(shadow_map=self.shadows), name='plane')
+        self.sand = DrawModelFromMesh(scene=self, M=poseMatrix(position=terrain, scale=0.25), mesh=SandModel(), shader=ShadowMappingShader(shadow_map=self.shadows), name='plane')
+        self.sea = DrawModelFromMesh(scene=self, M=poseMatrix(position=terrain, scale=0.25), mesh=WaterModel(), shader=WaterShader(), name='plane')       
         self.show_light = DrawModelFromMesh(scene=self, M=poseMatrix(position=self.light.position, scale=0.2), mesh=Sphere(material=Material(Ka=[10,10,10])), shader=FlatShader())
+   
         
         groupOfTrees1 = load_obj_file('models/Group-of-Trees.obj')
         self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[-2.5, -1, -2.5], scale=0.25,), mesh=mesh, shader=PhongShader(), name='box') for mesh in groupOfTrees1])
@@ -57,22 +56,20 @@ class ExeterScene(Scene):
         
         tree1 = load_obj_file('models/line-of-trees.obj')
         self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[-4.5, -1, 0], scale=0.2,), mesh=mesh, shader=PhongShader(), name='box') for mesh in tree1])
-        tree2 = load_obj_file('models/line-of-trees2.obj')
-        self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[0, -1, -4.5], scale=0.2,), mesh=mesh, shader=PhongShader(), name='box') for mesh in tree2])
+        # tree2 = load_obj_file('models/line-of-trees2.obj')
+        # self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[0, -1, -4.5], scale=0.2,), mesh=mesh, shader=PhongShader(), name='box') for mesh in tree2])
         
-        fern1 = load_obj_file('models/fern2.obj')
-        self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[1.25, -1, 0.5], scale=0.1,), mesh=mesh, shader=PhongShader(), name='box') for mesh in fern1])
-        fern2 = load_obj_file('models/fern3.obj')
-        self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[1.3, -1, 0], scale=0.1,), mesh=mesh, shader=PhongShader(), name='box') for mesh in fern2])
-        fern3 = load_obj_file('models/fern1.obj')
-        self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[-1.2, -1, 0.5], scale=0.1,), mesh=mesh, shader=PhongShader(), name='box') for mesh in fern3])
-        fern4 = load_obj_file('models/fern4.obj')
-        self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[-1.4, -1, -1], scale=0.1,), mesh=mesh, shader=PhongShader(), name='box') for mesh in fern4])
-
+        # fern1 = load_obj_file('models/fern2.obj')
+        # self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[1.25, -1, 0.5], scale=0.1,), mesh=mesh, shader=PhongShader(), name='box') for mesh in fern1])
+        # fern2 = load_obj_file('models/fern3.obj')
+        # self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[1.3, -1, 0], scale=0.1,), mesh=mesh, shader=PhongShader(), name='box') for mesh in fern2])
+        # fern3 = load_obj_file('models/fern1.obj')
+        # self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[-1.2, -1, 0.5], scale=0.1,), mesh=mesh, shader=PhongShader(), name='box') for mesh in fern3])
+        # fern4 = load_obj_file('models/fern4.obj')
+        # self.add_models_list ([DrawModelFromMesh(scene=self, M=poseMatrix(position=[-1.4, -1, -1], scale=0.1,), mesh=mesh, shader=PhongShader(), name='box') for mesh in fern4])
 
 
         self.skybox = SkyBox(scene=self)
-        
         
         # environment box for reflectionsenvbox
         #self.envbox = EnvironmentBox(scene=self)
@@ -89,7 +86,7 @@ class ExeterScene(Scene):
             model.draw()
             
         # # and for the box
-        # for model in self.box:
+        # for model in self.terrain:
         #     model.draw()
 
     def draw_reflections(self):
@@ -103,8 +100,8 @@ class ExeterScene(Scene):
         #     model.draw()
 
         # # and for the box
-        # for model in self.sea:
-        #     model.draw()
+        for model in self.sea:
+            model.draw()
 
 
     def draw(self, framebuffer=False):
@@ -124,7 +121,7 @@ class ExeterScene(Scene):
         self.skybox.draw()
 
         # render the shadows
-        self.shadows.render(self)
+        self.shadows.render(self, target=[-6, -1, 0])
 
         # when rendering the framebuffer we ignore the reflective object
         if not framebuffer:
@@ -134,14 +131,14 @@ class ExeterScene(Scene):
             # self.environment.update(self)
             # self.envbox.draw()
 
-            self.box.draw()
+            self.terrain.draw()
             self.sand.draw()
             self.sea.draw()
             
             for model in self.models:
                 model.draw()
             
-            
+        
             
 
         # then we loop over all models in the list and draw them
@@ -152,8 +149,8 @@ class ExeterScene(Scene):
         # for model in self.table:
         #     model.draw()
 
-        # # and for the box
-        # for model in self.box:
+        # # and for the terrain
+        # for model in self.terrain:
         #     model.draw()
 
         self.show_light.draw()
