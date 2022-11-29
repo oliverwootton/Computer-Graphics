@@ -27,7 +27,6 @@ class SceneFrame(Mesh):
                 v = i*nhoriz+j
                 vertices[v, 0] = 0
 
-                # Makes a flat plane
                 vertices[v, 1] = i 
                     
                 vertices[v, 2] = j
