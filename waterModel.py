@@ -96,6 +96,6 @@ class WaterModel(Mesh):
                       material=material
                       )
         
-        self.material.alpha = 0.4
+        self.material.alpha = 0.2
         
         self.textures.append(Texture('sea-water.jpg'))
