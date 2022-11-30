@@ -85,7 +85,6 @@ class JungleScene(Scene):
         # Uncomment below to show the position of the light source
         # self.show_light = DrawModelFromMesh(scene=self, M=poseMatrix(position=self.light.position, scale=0.2), mesh=Sphere(material=Material(Ka=[10,10,10])), shader=FlatShader())
         
-        # self.flattened_cube = FlattenCubeMap(scene=self, cube=self.environment)
 
     def draw_shadow_map(self):
         # first we need to clear the scene, we also clear the depth buffer to handle occlusions
